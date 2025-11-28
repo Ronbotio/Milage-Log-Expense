@@ -19,7 +19,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveLogs(logs) {
         localStorage.setItem('mileageLogs', JSON.stringify(logs));
     }
+// --- New Data Calculation Function ---
 
+/**
+ * Calculates the total mileage from all logs and updates the table footer.
+ */
+function calculateMonthlyTotal() {
+    const logs = loadLogs();
+    let totalMileage = 0;
+
+    logs.forEach(log => {
+        // Ensure the mileage property exists and is a number before adding
+        if (log.mileage) {
+            totalMileage += log.mileage;
+        }
+    });
+
+    // Update the footer cell with the calculated total
+    const totalElement = document.getElementById('monthly-total');
+    if (totalElement) {
+        // Display the total, rounded to one decimal place
+        totalElement.textContent = `Total Mileage Logged: ${totalMileage.toFixed(1)} mi`;
+    }
+}
+
+// ... the rest of the file ...
     // --- UI Functions ---
 
     /**
@@ -59,14 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
         tickets: document.getElementById('servicenow-tickets').value
     };
 
-        const logs = loadLogs();
-        logs.push(newLog); // Add the new log
-        saveLogs(logs);    // Save the updated list
+       const logs = loadLogs();
+    logs.push(newLog); // Add the new log
+    saveLogs(logs);    // Save the updated list
 
-        renderLogs();      // Update the table view
-        form.reset();      // Clear the form
-        alert('Mileage expense logged successfully!');
-    });
+    renderLogs();      // Update the table view
+    calculateMonthlyTotal(); // Calculate the new total
+    form.reset();      // Clear the form
+    alert('Mileage expense logged successfully!');
+});
 
     // 2. Handle CSV Export
     exportButton.addEventListener('click', () => {
@@ -100,5 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial load of logs when the page opens
     renderLogs();
+    // ⭐ CALL SPOT 2: ON PAGE LOAD (PLACE IT HERE) ⭐
+    calculateMonthlyTotal();
 
 });
+
