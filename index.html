@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mileage Expense Logger</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mileage Expense Logger 🚗</h1>
+        <form id="mileage-form">
+            
+            <label for="trip-date">Date:</label>
+            <input type="date" id="trip-date" required>
+            
+            <label for="locations-traveled">Locations Traveled:</label>
+            <textarea id="locations-traveled" placeholder="e.g., Home to Client A, Client A to Office" required></textarea>
+            
+            <label for="servicenow-tickets">ServiceNow Tickets (or details):</label>
+            <textarea id="servicenow-tickets" placeholder="e.g., INC12345, RIT67890 - Met with team on TICKET-111" required></textarea>
+            
+            <button type="submit">Log Expense</button>
+        </form>
+
+        <hr>
+
+        <h2>Logged Expenses</h2>
+        <table id="expense-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Locations</th>
+                    <th>Tickets</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+        <button id="export-csv-btn">Export to CSV</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
