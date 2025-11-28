@@ -35,8 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Format the date for better display
             const formattedDate = new Date(log.date).toLocaleDateString();
 
-            // Insert cells
+            // Insert cells (order matters)
             row.insertCell().textContent = formattedDate;
+            // *** NEW LINE ***
+            row.insertCell().textContent = log.mileage.toFixed(1) + " mi"; 
             row.insertCell().textContent = log.locations;
             row.insertCell().textContent = log.tickets;
         });
@@ -50,10 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Get values from the form inputs
         const newLog = {
-            date: document.getElementById('trip-date').value,
-            locations: document.getElementById('locations-traveled').value,
-            tickets: document.getElementById('servicenow-tickets').value
-        };
+        date: document.getElementById('trip-date').value,
+        // *** NEW LINE ***
+        mileage: parseFloat(document.getElementById('mileage-amount').value),
+        locations: document.getElementById('locations-traveled').value,
+        tickets: document.getElementById('servicenow-tickets').value
+    };
 
         const logs = loadLogs();
         logs.push(newLog); // Add the new log
@@ -73,15 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Create the CSV content
-        let csvContent = "Date,Locations,ServiceNow Tickets\n"; // Header row
-        
-        logs.forEach(log => {
-            // Escape quotes and replace newlines in text fields
-            const locations = `"${log.locations.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
-            const tickets = `"${log.tickets.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+        let csvContent = "Date,Mileage (Miles),Locations Traveled,ServiceNow Tickets\n"; 
+    
+    logs.forEach(log => {
+        // Escape quotes and replace newlines in text fields
+        const locations = `"${log.locations.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+        const tickets = `"${log.tickets.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
 
-            csvContent += `${log.date},${locations},${tickets}\n`;
-        });
+        // *** UPDATED DATA ROW ***
+        csvContent += `${log.date},${log.mileage.toFixed(1)},${locations},${tickets}\n`;
+    });
 
         // Create a blob and a temporary link to download the file
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -95,4 +100,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial load of logs when the page opens
     renderLogs();
+
 });
